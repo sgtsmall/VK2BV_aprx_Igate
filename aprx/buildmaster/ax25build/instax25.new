@@ -1,0 +1,183 @@
+#!/bin/bash
+
+# Color Codes
+Reset='\e[0m'
+Red='\e[31m'
+Green='\e[30;42m'  # Black/Green
+Yellow='\e[33m'
+YelRed='\e[31;43m' #Red/Yellow
+Blue='\e[34m'
+White='\e[37m'
+BluW='\e[37;44m'
+
+echo -e "${BluW}\t\n\t Script provided by Charles S. Schuman ( K4GBB )   \t\n\t\t\t ${Red} 01/09/2014    \n \t\t${Yellow}       k4gbb1@gmail.com \n${Reset}"
+
+  if ! uid=0
+   then su
+  fi
+
+if [ ! -d /usr/local/etc ]; then
+echo -e "${Green} Creating file folders for Config files${Reset}"
+  mkdir /usr/local/etc
+fi
+
+mkdir /usr/local/etc/ax25
+
+if [ ! -d /usr/local/var/ ]; then
+echo -e "${Green} Creating file folders for Data files${Reset}"
+  mkdir /usr/local/var
+fi
+
+mkdir /usr/local/var/ax25
+rm -fr /etc/ax25
+
+if [ ! -d /usr/local/src ]; then
+echo -e "${Green} Creating file folders for source files${Reset}"
+  mkdir /usr/local/src
+  mkdir /usr/local/src/ax25
+ else
+  mkdir /usr/local/src/ax25
+fi
+
+echo -e "${Green} Creating symlinks to standard directories${Reset}"
+  ln -s /usr/local/var/ax25/ /var/ax25
+  ln -s /usr/local/etc/ax25/ /etc/ax25
+  
+# Update Package list & Install Build resources
+  echo -e "${Green} Updating the Package List ${Reset}"
+  echo -e "\t${YelRed} This may take a while ${Reset}"
+  apt-get update > /dev/null
+  echo "  *"
+  apt-get install build-essential libax25-dev libx11-dev zlib1g-dev libncurses5-dev -y -q
+
+#if [ -f /usr/lib/libax25.a ]; then
+echo -e "${Green} Moveing Old Libax25 files out of the way${Reset}"
+  mkdir /usr/lib/ax25lib
+  mv /usr/lib/libax25* /usr/lib/ax25lib/
+#fi
+
+# Download libax25 source file 
+  cd /usr/local/src/ax25
+  echo -e "${Green} Getting Libax25 Source${Reset}"
+  wget -qt3 http://linuxax25.googlecode.com/files/libax25-1.0.3.tar.gz && tar xf libax25-1.0.3.tar.gz
+  if [ $? -ne 0 ]
+   then
+     echo -e "${Red}\t Libax25 Source files are Missing${Reset}"
+     exit 1
+  fi
+# Download ax25-tools source file
+  cd /usr/local/src/ax25/
+echo -e "${Green} Getting Ax25-tools Source${Reset}"
+  wget -qt3  http://linuxax25.googlecode.com/files/ax25tools-1.0.2.tar.gz && tar xf ax25tools-1.0.2.tar.gz
+  if [ $? -ne 0 ]
+    then
+	echo -e "${Red}\t Ax25-tools Source files are missing ${Reset}"
+     exit 1
+  fi
+# Download ax25-apps source file
+  cd /usr/local/src/ax25/
+  echo -e "${Green} Getting Ax25-apps Source${Reset}"
+  wget -qt3 http://linuxax25.googlecode.com/files/ax25apps-1.0.2.tar.gz && tar xf ax25apps-1.0.2.tar.gz 
+ if [ $? -ne 0 ]
+    then
+	echo -e "${Red}\t Ax25-Apps Source files are missing ${Reset}" 
+     exit 1
+  fi
+
+echo -e "${Green} Now Running Makeax25 ${Reset}"
+
+# Libax25
+  echo -e "${Blue}\t Compileing Runtime Lib files ${Reset}"
+  cd /usr/local/src/ax25/libax25-1.0.3
+ ./configure > liberror.txt 2>&1
+  echo -e -n "\t  *"
+# Compile
+  echo -n "  *"   
+  make >> liberror.txt 2>&1
+  if [ $? -ne 0 ]
+    then
+     echo -e "${Red}\t Libax25 Compile error - See liberror.txt ${Reset}"
+     exit 1
+  fi
+  echo  "  *"
+# Install
+  make install >> liberror.txt 2>&1
+  if [ $? -ne 0 ]
+   then
+     echo -e "${Red} Libax25 Install error - See liberror.txt${Reset}"
+     exit 1
+   else   
+     echo -e "${Green} Libax25 Installed${Reset}"
+     rm liberror.txt
+  fi
+
+# AX25 libraries declaration (into ld.so.conf)
+  echo "/usr/local/lib" >> /etc/ld.so.conf && /sbin/ldconfig
+
+# AX25-APPS
+  echo -e "${Blue}\t Compileing Ax25-apps ${Reset}"
+  cd /usr/local/src/ax25/ax25apps-1.0.2
+  ./configure > appserror.txt 2>&1
+  echo -n -e "\t  *" 
+# Compile Ax25-apps
+  echo -n "  *" 
+  make >> appserror.txt 2>&1
+  if [ $? -ne 0 ]
+   then
+     echo -e "${Red}\t Ax25-Apps Compile Error - see appserror.txt ${Reset}"
+     exit 1
+  fi
+# Install Ax25-apps
+  echo "  *" 
+  make  install >> appserror.txt 2>&1
+  if [ $? -ne 0 ]
+  then
+     echo -e "${Red} Ax25-Apps Install Error - see appserror.txt ${Reset}"
+     exit 1
+  else
+     echo -e "${Green} Ax25-apps Installed ${Reset}"
+     rm appserror.txt
+  fi
+  cd /usr/local/src/ax25/
+
+# AX25-TOOLS
+  echo -e "${Blue}\t Compiling Ax25-tools ${Reset}"
+  cd /usr/local/src/ax25/ax25tools-1.0.2
+  echo -n -e "\t  *" 
+  ./configure > toolserror.txt 2>&1
+# Compile Ax.25 tools
+  echo -n "  *" 
+  make >> toolserror.txt 2>&1
+    if [ $? -ne 0 ]
+      then
+        echo -e "${Red}\t Ax25-tools Compile error - See toolserror.txt ${Reset}"
+        exit 1
+    fi
+# Install Ax.25 tools
+  echo -e "  *" 
+make install >> toolserror.txt 2>&1
+  if [ $? -ne 0 ]
+    then
+      echo -e "${Red}\t Ax25-tools Install error - See toolserror.txt ${Reset}"
+      exit 1
+    else
+      echo -e "${Green} Ax25-tools Installed  ${Reset}"
+      rm toolserror.txt
+    fi
+
+
+# Add Modules to /etc/modules
+  echo "ax25" >> /etc/modules
+  echo "rose" >> /etc/modules
+  echo "mkiss" >> /etc/modules
+
+# Declaring port 10093 for FPAC service
+  echo "fpad 	10093/tcp 	# FPAC" >> /etc/services
+  echo "fpad 	10093/udp 	# FPAC" >> /etc/services
+
+# Set permissions for /usr/local/sbin/
+  cd /usr/local/sbin/
+  chmod 2755 *
+  echo -e "\t \e[030;42m    Ax25 is successfully installed \t ${Reset}"
+
+# (End of Script)

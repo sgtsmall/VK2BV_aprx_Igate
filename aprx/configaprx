@@ -1,0 +1,90 @@
+#!/bin/bash
+user="NOCALL"
+term="1"
+passcode="12345"
+loclat="3351.43S"
+loclon="15112.91E"
+blank=""
+correct="n"
+
+function paramecho {
+echo "Params are Callsign $user Terminal $term creating $user-$term"
+echo " APRSIS passcode $passcode"
+echo "lat is $loclat  lon is $loclon"
+echo ""
+}
+
+
+function getparam {
+echo -e "Valid Callsign [e.g. VK2ABC] [$user]\c"
+read usern
+if [ -z $usern ] ; then
+ usern="$user"
+fi
+user=${usern^^}
+#
+echo -e "Terminal number [e.g. 1] [$term]\c"
+read termn
+if [ -z $termn ] ; then
+ termn="$term"
+fi
+term="$termn"
+#
+passcode=`~/aprx/keygen.py "$user"`
+echo "Passcode is unique for your Callsign "
+echo -e "Passcode for [$user] calculated as [$passcode] "
+echo -e "APRSIS Passcode number [$passcode]\c"
+read passcoden
+if [ -z $passcoden ] ; then
+ passcoden="$passcode"
+fi
+passcode="$passcoden"
+#
+echo "lat and long for your igate location"
+echo "Format is degMM.MMS  use the aprs.is google map to get the value"
+echo -e "lat value [e.g. 3351.12S] [$loclat]\c"
+read loclatn
+if [ -z $loclatn ] ; then
+ loclatn="$loclat"
+fi
+loclat="$loclatn"
+echo -e "lon value [e.g. 15151.12E] [$loclon]\c"
+read loclonn
+if [ -z $loclonn ] ; then
+ loclonn="$loclon"
+fi
+loclon="$loclonn"
+
+}
+
+function writesed {
+echo ""
+
+cat << EOF > aprx/nikesed.sh
+sed -e 's/raspberrypi/$user$term/' -i.bak /etc/hosts
+sed -e 's/raspberrypi/$user$term/' -i.bak /etc/hostname
+sed -e 's/NOCALL-01/$user-$term/' -i.bak /etc/ax25/soundmodem.conf
+sed -e 's/NOCALL-01/$user-$term/' -i.bak /etc/ax25/axports
+sed -e 's/NOCALL-01/$user-$term/' -e 's/3152.22S/$loclat/' -e 's/15151.51E/$loclon/' -e 's/12345/$passcode/' -i.bak /etc/aprx.conf
+EOF
+cat aprx/nikesed.sh
+}
+
+
+paramecho
+while [ $correct != "Y" ] ; do
+ getparam
+ paramecho
+ echo -e " If the values are correct enter "Y"  [$correct]\c"
+ read ans
+ if [ -z $ans ] ; then
+  ans="n"
+ fi
+ if [ $ans = "Y" ] ; then
+  correct="Y"
+  paramecho >> /home/pi/aprx/paramecho.txt
+  writesed
+  sudo sh -x /home/pi/aprx/nikesed.sh
+ fi
+done
+

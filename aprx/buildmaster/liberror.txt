@@ -1,0 +1,2 @@
+instax25.new: 92: instax25.new: ./configure: not found
+make: *** No targets specified and no makefile found.  Stop.

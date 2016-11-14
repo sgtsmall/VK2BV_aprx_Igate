@@ -1,0 +1,12 @@
+#!/bin/sh
+# this clears the configuration and reboot should start as scratch
+for f in `ls -1 aprx/buildmaster/userfiles`
+do
+ RFILE=`echo $f| tr '_' '/' `
+ echo $RFILE
+ cp aprx/buildmaster/userfiles/$f $RFILE
+done
+#
+rm .configureone
+rm .configuretwo
+cd /etc/init.d && insserv -r aprs

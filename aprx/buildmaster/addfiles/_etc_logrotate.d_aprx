@@ -1,0 +1,8 @@
+/var/log/aprx/aprx-rf.log /var/log/aprx/aprx.log /var/log/aprx/erlang.log {
+ weekly
+ rotate 24
+# compress
+ missingok
+ notifempty
+ create 644 root adm
+}

@@ -1,0 +1,41 @@
+#!/bin/bash
+#
+option="o"
+#
+while [ $option != "q" ] ; do
+ echo ""
+ echo "a) start soundmodem/ax25 (no aprx)"
+ echo "b) stop soundmodem/ax25 (no aprx)" 
+ echo "c) start alsamixer"
+ echo "d) tail syslog"
+ echo "e) axlisten (for signal or test track)"
+ echo "f) mheard"
+ echo "g) tail aprx.log"
+ echo "h) tail aprx-rf.log"
+ echo "i) Commit soundmodem/ax25/aprx to startup "
+ echo "j) tail paramecho.txt"
+ echo "X) Clear All values and start again"
+ echo "q) quit this menu"
+ echo ""
+ echo -e "Enter option :\c"
+ read ans
+ if [ -z $ans ] ; then
+  ans="$option"
+ fi
+ option="$ans"
+ case $option in
+  a) sudo /etc/ax25/ax25-up.sh ;; 
+  b) sudo /etc/ax25/ax25-down.sh ;; 
+  c) sudo alsamixer ;;
+  d) sudo tail /var/log/syslog|pg ;;
+  e) sudo axlisten -aht ;; 
+  f) mheard ;;
+  g) tail /var/log/aprx/aprx.log ;;
+  h) tail /var/log/aprx/aprx-rf.log ;;
+  i) sudo /home/pi/aprx/autostartaprx ;;
+  j) tail /home/pi/aprx/paramecho.txt
+  X) sudo /home/pi/aprx/clearaprx ;;
+  q) echo "good bye"
+ esac
+done
+

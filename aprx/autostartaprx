@@ -1,0 +1,1 @@
+cd /etc/init.d && insserv aprs && update-rc.d aprs defaults

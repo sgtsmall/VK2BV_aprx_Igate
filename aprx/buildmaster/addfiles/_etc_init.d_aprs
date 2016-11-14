@@ -1,0 +1,31 @@
+### BEGIN INIT INFO 
+# Provides: aprs 
+# Required-Start: $local_fs $network 
+# Required-Stop: $local_fs 
+# Default-Start: 2 3 4 5 
+# Default-Stop: 0 1 6 
+# Short-Description: aprs start stop 
+# Description: starting and stopping ax25 and aprx 
+### END INIT INFO# If you want a command to always run, put it here 
+ 
+# Carry out specific functions when asked to by the system 
+case "$1" in 
+	start) 
+		echo "Starting ax25 services" 
+		/etc/ax25/ax25-up.sh 
+		sleep 5 
+		/sbin/aprx start 
+		;; 
+	stop) 
+		echo "Stopping ax25 servcies and aprx" 
+		# kill application you want to stop 
+		killall aprx 
+		/etc/ax25/ax25-down.sh
+		;; 
+	*) 
+		echo "Usage: /etc/init.d/aprs {start|stop}" 
+		exit 1 
+	;; 
+esac 
+ 
+exit 0 
