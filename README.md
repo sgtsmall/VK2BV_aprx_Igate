@@ -26,7 +26,7 @@ Need to put more here at the moment the main action is to create an SD card with
 
 ## Documentation
 
-There will be lots of documentation here: https://github.com/sgtsmall/VK2BV_aprx_igate/docs (oneday)
+There will be lots of documentation here: https://github.com/sgtsmall/VK2BV_aprx_igate/tree/master/docs (oneday)
 
 ## Support
 
@@ -38,7 +38,7 @@ Maybe
 
 ## Configuration Tool
 
-See: https://github.com/sgtsmall/VK2BV_aprx_igate/docs/VK2BV_aprx_config.md
+See: https://github.com/sgtsmall/VK2BV_aprx_igate/tree/master/docs/VK2BV_aprx_config.md
 
 ## Contributing
 
