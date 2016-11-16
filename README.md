@@ -22,7 +22,7 @@ The main image is available from the Waverley Members Web Site (I think!) It is 
 
 ## Installation
 
-See: https://github.com/sgtsmall/VK2BV_aprx_igate/docs/aprx_setup.md 
+Need to put more here at the moment the main action is to create an SD card with the image and boot.
 
 ## Documentation
 
@@ -38,10 +38,7 @@ Maybe
 
 ## Configuration Tool
 
-
-The source for it is here:
-
-https://github.com/sgtsmall/VK2BV_repeater_config/etc/placeholderforconfigurationtool
+See: https://github.com/sgtsmall/VK2BV_aprx_igate/docs/VK2BV_aprx_config.md
 
 ## Contributing
 
