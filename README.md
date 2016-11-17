@@ -5,7 +5,7 @@ This Github entry is not finalised... stuff is still all over the place.
 
 The main image is available from the Waverley Members Web Site (I think!) It is definately located in the club Google Drive.
 
-
+![alt text](https://github.com/sgtsmall/VK2BV_aprx_Igate/blob/master/docs/VK2BVAPRXiGate1.png "Simple Build of iGate")
 
 ## Overview
 *   Using most Raspberry Pi's with a soundcard and a simple FM radio (e.g. Baofeng UV-5R). You can create a APRS Receiver connected to the APRS-IS system.
