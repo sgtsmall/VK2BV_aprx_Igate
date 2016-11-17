@@ -3,7 +3,7 @@ Scripts and documentation to build an image file for a Raspberry Pi Receive only
 
 This Github entry is not finalised... stuff is still all over the place.
 
-The main image is available from the Waverley Members Web Site (I think!) It is definately located in the club Google Drive.
+The main image is available from the Waverley Members Web Site (I think!) It is definitely located in the club Google Drive.
 
 ![alt text](https://github.com/sgtsmall/VK2BV_aprx_Igate/blob/master/docs/VK2BVAPRXiGate1.png "Simple Build of iGate")
 
