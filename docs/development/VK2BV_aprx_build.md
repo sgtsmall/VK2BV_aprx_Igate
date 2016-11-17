@@ -197,7 +197,11 @@ sed -e "s/Z/$TAB/g" -i.bak /etc/ax25/axports</td>
 
 nikebuild.sh will fix up most of the installation scripts and boot files so that the configuration scripts will work (they also work by doing sed replacements)
 
-# chmod 7555 /etc/ax25/soundmodem.conf
+<table>
+  <tr>
+    <td>chmod 7555 /etc/ax25/soundmodem.conf</td>
+  </tr>
+</table>
 
 It was too much work to fix a couple of the records at the moment so after it runs you have to manually edit /etc/aprx.conf  (filter, interface and beacon) 
 
