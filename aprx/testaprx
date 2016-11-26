@@ -5,7 +5,7 @@ option="o"
 while [ $option != "q" ] ; do
  echo ""
  echo "a) start soundmodem/ax25 (no aprx)"
- echo "b) stop soundmodem/ax25 (no aprx)" 
+ echo "b) stop soundmodem/ax25 (no aprx)"
  echo "c) start alsamixer"
  echo "d) tail syslog"
  echo "e) axlisten (for signal or test track)"
@@ -24,11 +24,11 @@ while [ $option != "q" ] ; do
  fi
  option="$ans"
  case $option in
-  a) sudo /etc/ax25/ax25-up.sh ;; 
-  b) sudo /etc/ax25/ax25-down.sh ;; 
+  a) sudo /etc/ax25/ax25-up.sh ;;
+  b) sudo /etc/ax25/ax25-down.sh ;;
   c) sudo alsamixer ;;
   d) sudo tail /var/log/syslog|pg ;;
-  e) sudo axlisten -aht ;; 
+  e) sudo axlisten -aht ;;
   f) mheard ;;
   g) tail /var/log/aprx/aprx.log ;;
   h) tail /var/log/aprx/aprx-rf.log ;;
