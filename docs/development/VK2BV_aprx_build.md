@@ -4,7 +4,7 @@ RaspberryPi using USB sound card
 
  
 
-# Rebuild a Master Image 20140930
+# Rebuild a Master Image 20151115
 
 From time to time you may need to completely rebuild the image. These instructions and some scripts represent a minimal set of installs and script changes that were needed to build the image. Most of this came about as I was searching and trying several different base images, trying to find a balance of function for size. I ended up automating several of these steps and these notes are the result. Your mileage may vary!!!
 
